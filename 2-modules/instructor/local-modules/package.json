@@ -1,0 +1,12 @@
+{
+  "name": "local-modules",
+  "version": "1.0.0",
+  "description": "Learn node js local modules | Kelas Programming Dec 2024",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js"
+  },
+  "author": "zahinz",
+  "license": "ISC"
+}
