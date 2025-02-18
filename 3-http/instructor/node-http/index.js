@@ -19,15 +19,18 @@ const server = http.createServer(function (req, res) {
         data: "Hello from node js http server!",
       })
     );
+    return;
   } else if (url === "/whatsapp") {
     visitorCount++;
     res.writeHead(301, { Location: "https://wa.me/60196974200" });
     res.end();
+    return;
   } else {
     const pathNotFoundPage = path.join("pages", "404.html");
     const notFoundPage = fs.readFileSync(pathNotFoundPage, "utf-8");
     res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
     res.end(notFoundPage);
+    return;
   }
 });
 
