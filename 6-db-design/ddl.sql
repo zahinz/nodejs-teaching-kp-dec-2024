@@ -21,3 +21,7 @@ CREATE TABLE "Links" (
     created_by INTEGER,
     FOREIGN KEY (created_by) REFERENCES "Users"(id)
 );
+
+-- Add visitor_count column to the Link table
+ALTER TABLE "Links"
+ADD COLUMN visitor_count INTEGER DEFAULT 0;
