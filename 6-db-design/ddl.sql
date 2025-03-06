@@ -8,16 +8,16 @@ DROP DATABASE "bitly-clone";
 -- Create User table
 CREATE TABLE "Users" (
     id SERIAL PRIMARY KEY,
-    email VARCHAR(120),
-    password VARCHAR(120),
-    username VARCHAR(120)
+    email  VARCHAR(120) UNIQUE,
+    username  VARCHAR(120) UNIQUE,
+    password VARCHAR(120)
 );
 
 -- Create Link table
 CREATE TABLE "Links" (
     id SERIAL PRIMARY KEY,
     actual_link TEXT,
-    shortened_link VARCHAR(120),
+    shortened_link VARCHAR(120) UNIQUE,
     created_by INTEGER,
     FOREIGN KEY (created_by) REFERENCES "Users"(id)
 );
