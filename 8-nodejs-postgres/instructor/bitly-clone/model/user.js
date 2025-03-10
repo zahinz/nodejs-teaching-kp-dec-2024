@@ -9,11 +9,17 @@ CREATE TABLE IF NOT EXISTS "Users" (
 );
 `;
 
+const query1 = `
+ALTER TABLE "Users"
+ADD COLUMN IF NOT EXISTS "nickname" VARCHAR(120);
+`;
+
 async function createUserTable() {
   try {
     // RESOLVE
     //  resolve the promise if the async operation is successful
     const dbRes = await database.query(query);
+    const dbRes1 = await database.query(query1);
     // console.log(dbRes);
     console.log("Table Users created successfully");
   } catch (error) {
