@@ -18,6 +18,7 @@ CREATE TABLE "Links" (
     id SERIAL PRIMARY KEY,
     actual_link TEXT,
     shortened_link VARCHAR(120) UNIQUE,
+    visitor_count INTEGER DEFAULT 0,
     created_by INTEGER,
     FOREIGN KEY (created_by) REFERENCES "Users"(id)
 );
