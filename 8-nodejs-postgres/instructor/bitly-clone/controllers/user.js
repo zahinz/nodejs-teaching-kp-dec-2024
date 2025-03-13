@@ -61,9 +61,25 @@ async function login(req, res) {
   return res.status(200).json({ message: "Authorized", data: userDb, token });
 }
 
+function testPublic(req, res) {
+  return res.status(200).json({
+    message: "Public route",
+  });
+}
+
+function testPrivate(req, res) {
+  const user = req.user;
+  return res.status(200).json({
+    message: "Private route",
+    user, // IMPORTANT  user data is injected from isAuth middleware
+  });
+}
+
 const userController = {
   register,
   login,
+  testPublic,
+  testPrivate,
 };
 
 export default userController;
