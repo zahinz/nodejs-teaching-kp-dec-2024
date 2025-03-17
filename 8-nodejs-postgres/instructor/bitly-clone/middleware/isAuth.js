@@ -26,12 +26,16 @@ async function isAuthenticated(req, res, next) {
     const jwtSecret = process.env.JWT_SECRET;
     const decoded = jwt.verify(token, jwtSecret, function (err, d) {
       if (err) {
-        return res.status(401).json({
-          message: "Unauthorized",
-        });
+        return null;
       }
       return d;
     });
+
+    if (!decoded) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
 
     const userId = decoded.userId;
 

@@ -57,7 +57,6 @@ async function login(req, res) {
   //  inject user id into jwt token
   const jwtSecret = process.env.JWT_SECRET;
   const token = jwt.sign({ userId: userDb.id }, jwtSecret);
-  console.log(token);
   return res.status(200).json({ message: "Authorized", data: userDb, token });
 }
 
