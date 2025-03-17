@@ -62,9 +62,84 @@ async function getAllLinks(req, res) {
   }
 }
 
+async function redirectLink(req, res) {
+  try {
+    const shortenedLink = req.params.shortenedLink;
+    const query = `
+    SELECT actual_link FROM "Links"
+    WHERE shortened_link = $1;
+    `;
+    const values = [shortenedLink];
+    const dbRes = await database.query(query, values);
+
+    const linkNotFound = dbRes.rows.length === 0;
+    if (linkNotFound) {
+      return res.status(404).json({
+        message: "Link not found",
+      });
+    }
+
+    const linkData = dbRes.rows[0];
+    //   EXPLORE update visit count
+    return res.redirect(linkData.actual_link);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+}
+
+async function deleteLink(req, res) {
+  try {
+    const linkId = req.params.linkId;
+    const user = req.user;
+    // check if link exists
+    const checkQuery = `
+        SELECT * FROM "Links"
+        WHERE id = $1 AND created_by = $2;
+        `;
+    const checkValues = [linkId, user.id];
+    const checkRes = await database.query(checkQuery, checkValues);
+    const linkNotFound = checkRes.rows.length === 0;
+    if (linkNotFound) {
+      return res.status(404).json({
+        message: "Link not found",
+      });
+    }
+
+    //   if link exists, delete link
+    const query = `
+    DELETE FROM "Links"
+    WHERE id = $1 AND created_by = $2;
+    `;
+    const values = [linkId, user.id];
+    await database.query(query, values);
+
+    return res.status(200).json({
+      message: "Link deleted",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+}
+
+function viewSingleLink(req, res) {
+  // implement view single link function
+}
+
+function editLink(req, res) {
+  // implement edit link function
+}
+
 const linkController = {
   createLink,
   getAllLinks,
+  redirectLink,
+  deleteLink,
 };
 
 export default linkController;

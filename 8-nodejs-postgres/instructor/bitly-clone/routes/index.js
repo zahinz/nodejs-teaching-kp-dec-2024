@@ -15,5 +15,9 @@ appRouter.get("/private", isAuthenticated, userController.testPrivate);
 // links routes
 appRouter.get("/links", isAuthenticated, linkController.getAllLinks);
 appRouter.post("/links", isAuthenticated, linkController.createLink);
+appRouter.delete("/links/:linkId", isAuthenticated, linkController.deleteLink);
+
+// redirect route
+appRouter.get("/:shortenedLink", linkController.redirectLink);
 
 export default appRouter;
