@@ -1,5 +1,6 @@
 import database from "../database/connection.js";
 import crypto from "crypto";
+import transporter from "../service/email.js";
 
 async function createLink(req, res) {
   const actual_link = req.body.actual_link;
@@ -25,6 +26,31 @@ async function createLink(req, res) {
     const values = [actual_link, randomString, user.id];
     const dbRes = await database.query(query, values);
     const linkData = dbRes.rows[0];
+
+    // notify user of new link via email
+    const message = {
+      from: "info@bitly-clone.com",
+      to: user.email,
+      subject: "New link created",
+      text: "Hello, you have created a new link",
+      html: `
+      <div style="background-color: #f0f0f0; padding: 20px;">
+        <h1>New Link Created</h1>
+        <p>Hello ${user.username}, you have created a new link</p>
+        <p>Actual link: ${linkData.actual_link}</p>
+        <p>Shortened link: <a href="http://localhost:${process.env.PORT}/${linkData.shortened_link}">http://localhost:${process.env.PORT}/${linkData.shortened_link}</a></p>
+      </div>
+      `,
+    };
+    transporter.sendMail(message, (error, info) => {
+      if (error) {
+        console.error("Error occurred: ", error.message);
+        return res.status(500).json({
+          message: "Internal server error",
+        });
+      }
+      console.log("Message sent: %s", info.messageId);
+    });
 
     return res.status(200).json({
       message: "New link created",

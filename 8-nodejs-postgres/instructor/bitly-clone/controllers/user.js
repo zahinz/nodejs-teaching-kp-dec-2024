@@ -1,6 +1,7 @@
 import database from "../database/connection.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import transporter from "../service/email.js";
 
 async function register(req, res) {
   try {
@@ -13,6 +14,29 @@ async function register(req, res) {
     const query = `INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING *;`;
     const values = [data.username, data.email, hashedPassword];
     const dbRes = await database.query(query, values);
+
+    // send welcome email
+    const message = {
+      from: "info@bitly-clone.com",
+      to: data.email,
+      subject: "Welcome to Bitly Clone",
+      text: "Hello, welcome to Bitly Clone",
+      html: `
+      <div style="background-color: #f0f0f0; padding: 20px;">
+        <h1>Welcome to Bitly Clone</h1>
+        <p>Hello ${data.username}, welcome to Bitly Clone</p>
+      </div>
+      `,
+    };
+    transporter.sendMail(message, (error, info) => {
+      if (error) {
+        console.error("Error occurred: ", error.message);
+        return res.status(500).json({
+          message: "Internal server error",
+        });
+      }
+      console.log("Message sent: %s", info.messageId);
+    });
 
     // explore query possibilities to check if user already exists by email or username, after check then create user
     return res.status(201).json(dbRes.rows[0]);
