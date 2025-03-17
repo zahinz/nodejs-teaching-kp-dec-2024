@@ -4,8 +4,18 @@ meta {
   seq: 6
 }
 
-get {
-  url: 
-  body: none
-  auth: none
+post {
+  url: http://localhost:9090/links
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0MjIyMjIwM30.4SDvi9UobIVQF7sYfkof4aFfEebDZk3YxfOh9PpDUmo
+}
+
+body:json {
+  {
+    "actual_link": "https://www.youtube.com/"
+  }
 }
