@@ -10,19 +10,23 @@
   <body>
     <main>
       <h1>Bitly Clone</h1>
-      <form id="login-form" onsubmit="loginFormSubmit(event)">
-        <h2>Login</h2>
+      <form id="register-form" onsubmit="registerFormSubmit(event)">
+        <h2>Register</h2>
         <div>
           <label for="email">Email</label>
           <input type="email" name="email" id="email" />
         </div>
         <div>
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" />
+        </div>
+        <div>
           <label for="password">Password</label>
           <input type="password" name="password" id="password" />
         </div>
-        <button type="submit">Login</button>
-        <a href="register.html" class="button-link">
-          <button type="button">New user? Register</button>
+        <button type="submit">Register</button>
+        <a href="index.html" class="button-link">
+          <button type="button">Existing user? Login</button>
         </a>
       </form>
     </main>

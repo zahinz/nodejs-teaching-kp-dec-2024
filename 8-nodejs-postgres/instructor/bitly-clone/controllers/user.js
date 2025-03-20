@@ -28,15 +28,12 @@ async function register(req, res) {
       </div>
       `,
     };
-    transporter.sendMail(message, (error, info) => {
-      if (error) {
-        console.error("Error occurred: ", error.message);
-        return res.status(500).json({
-          message: "Internal server error",
-        });
-      }
-      console.log("Message sent: %s", info.messageId);
-    });
+    // transporter.sendMail(message, (error, info) => {
+    //   if (error) {
+    //     console.error("Error occurred: ", error.message);
+    //   }
+    //   console.log("Message sent: %s", info.messageId);
+    // });
 
     // explore query possibilities to check if user already exists by email or username, after check then create user
     return res.status(201).json(dbRes.rows[0]);
